@@ -12,9 +12,15 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('payments', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
-        });
+    $table->id();
+    $table->foreignId('tenancy_id')->constrained()->onDelete('cascade');
+    $table->decimal('amount', 10, 2);
+    $table->string('mpesa_reference')->unique();
+    $table->string('month_paid_for');
+    $table->enum('status', ['pending', 'confirmed', 'rejected'])->default('pending');
+    $table->foreignId('confirmed_by')->nullable()->constrained('users')->nullOnDelete();
+    $table->timestamps();
+});
     }
 
     /**
