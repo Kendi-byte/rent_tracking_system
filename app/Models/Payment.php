@@ -4,31 +4,25 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+
 class Payment extends Model
 {
-    //
+    // status and confirmed_by are intentionally NOT fillable:
+    // they are set by the confirm/reject action, never by form input.
     protected $fillable = [
-        'user_id',
         'tenancy_id',
-        'amount_paid',
-        'reference_number', // e.g., M-Pesa transaction code
-        'payment_date',
+        'amount',
+        'mpesa_reference',
+        'month_paid_for',
     ];
 
-    /**
-     * Get the user who made the payment.
-     */
-    public function tenant(): BelongsTo
-    {
-        return $this->belongsTo(User::class, 'user_id');
-    }
-
-    /**
-     * Get the tenancy associated with the payment.
-     */
     public function tenancy(): BelongsTo
     {
         return $this->belongsTo(Tenancy::class);
     }
-}
 
+    public function confirmedBy(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'confirmed_by');
+    }
+}

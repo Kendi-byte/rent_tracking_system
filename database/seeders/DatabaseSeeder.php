@@ -4,36 +4,29 @@ namespace Database\Seeders;
 
 use App\Models\User;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
-    /**
-     * Seed the application's database.
-     */
     public function run(): void
     {
-        // Caretaker Account
         User::create([
-            'name' => 'John Caretaker',
+            'name' => 'Neema Kendi',
             'email' => 'caretaker@test.com',
-            'password' => Hash::make('password123'),
+            'password' => 'password123',
             'role' => 'caretaker',
         ]);
 
-        // Landlord Account
         User::create([
-            'name' => 'Alice Landlord',
+            'name' => 'Hezikiah Moranga',
             'email' => 'landlord@test.com',
-            'password' => Hash::make('password123'),
+            'password' => 'password123',
             'role' => 'landlord',
         ]);
 
-        // Tenant Account
         User::create([
-            'name' => 'Bob Tenant',
+            'name' => 'Maxwell Maina',
             'email' => 'tenant@test.com',
-            'password' => Hash::make('password123'),
+            'password' => 'password123',
             'role' => 'tenant',
         ]);
     }

@@ -2,15 +2,14 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+
 class User extends Authenticatable
 {
-    /** @use HasFactory<UserFactory> */
-   use Notifiable;
+    use Notifiable;
 
     protected $fillable = [
         'name',
@@ -24,19 +23,20 @@ class User extends Authenticatable
         'remember_token',
     ];
 
-    /**
-     * Get the tenancy details for the user.
-     */
+    protected function casts(): array
+    {
+        return [
+            'password' => 'hashed',
+        ];
+    }
+
     public function tenancy(): HasOne
     {
         return $this->hasOne(Tenancy::class);
     }
 
-    /**
-     * Get all payment records for the user.
-     */
-    public function payments(): HasMany
+    public function payments(): HasManyThrough
     {
-        return $this->hasMany(Payment::class);
+        return $this->hasManyThrough(Payment::class, Tenancy::class);
     }
 }

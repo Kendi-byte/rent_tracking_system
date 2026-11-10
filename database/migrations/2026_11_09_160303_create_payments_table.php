@@ -6,26 +6,20 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('payments', function (Blueprint $table) {
-    $table->id();
-    $table->foreignId('tenancy_id')->constrained()->onDelete('cascade');
-    $table->decimal('amount', 10, 2);
-    $table->string('mpesa_reference')->unique();
-    $table->string('month_paid_for');
-    $table->enum('status', ['pending', 'confirmed', 'rejected'])->default('pending');
-    $table->foreignId('confirmed_by')->nullable()->constrained('users')->nullOnDelete();
-    $table->timestamps();
-});
+            $table->id();
+            $table->foreignId('tenancy_id')->constrained()->restrictOnDelete();
+            $table->decimal('amount', 10, 2);
+            $table->string('mpesa_reference')->unique();
+            $table->string('month_paid_for'); // stored as Y-m, e.g. 2026-11
+            $table->enum('status', ['pending', 'confirmed', 'rejected'])->default('pending');
+            $table->foreignId('confirmed_by')->nullable()->constrained('users')->nullOnDelete();
+            $table->timestamps();
+        });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('payments');
